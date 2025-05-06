@@ -1,0 +1,5 @@
+train: C:/Users/lenovo/OneDrive/ドキュメント/ASEP2/dataset/images/train
+val: C:/Users/lenovo/OneDrive/ドキュメント/ASEP2/dataset/images/train
+names: ["walkable_path"]
+
+
