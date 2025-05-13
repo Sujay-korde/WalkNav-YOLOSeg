@@ -1,0 +1,6 @@
+path: C:/Users/lenovo/OneDrive/ドキュメント/ASEP2/dataset
+train: images/train
+val: images/val
+
+nc: 1
+names: ['walkable']
