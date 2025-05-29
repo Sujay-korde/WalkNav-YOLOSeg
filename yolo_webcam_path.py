@@ -75,6 +75,22 @@ import cv2
 import numpy as np
 from ultralytics import YOLO
 import time
+# === voice===
+import pyttsx3
+
+engine = pyttsx3.init()
+engine.setProperty('rate', 160)  # adjust speed if needed
+
+# Try to set Hindi voice (optional)
+for voice in engine.getProperty('voices'):
+    if "hindi" in voice.name.lower() or "heera" in voice.name.lower() or "kalpana" in voice.name.lower():
+        engine.setProperty('voice', voice.id)
+        break
+
+def speak(text):
+    engine.say(text)
+    engine.runAndWait()
+
 
 # Load both models
 model_path = YOLO("runs/segment/train8/weights/best.pt")       # Trained segmentation model for walkable path -Done
@@ -151,13 +167,44 @@ while True:
         last_direction = direction
 
     # Display detected objects (every 2s to avoid clutter)
+
+    # current_time = time.time()
+    # if detected_objects and current_time - last_obj_update_time > 2:
+    #     unique_objects = set(detected_objects)
+    #     if unique_objects != last_detected_objects:
+    #         print("⚠️ Detected objects ahead:", ", ".join(unique_objects))
+    #         last_detected_objects = unique_objects
+    #         last_obj_update_time = current_time
+        # Object detection
+    results_obj = model_obj.predict(source=frame, verbose=False)
+    detected_objects_with_direction = []
+
+    for result in results_obj:
+        for box in result.boxes:
+            cls_id = int(box.cls[0])
+            confidence = float(box.conf[0])
+            label = result.names[cls_id]
+
+        # Only alert for these objects
+        if confidence > 0.5 and label in ["person", "car", "bicycle", "motorcycle"]:
+            x1, y1, x2, y2 = map(int, box.xyxy[0])
+            cx = (x1 + x2) // 2  # center x of box
+
+            # Determine direction
+            if cx < frame_width // 3:
+                position = "left"
+            elif cx > 2 * frame_width // 3:
+                position = "right"
+            else:
+                position = "ahead"
+
+            detected_objects_with_direction.append(f"{label} on the {position}")
     current_time = time.time()
-    if detected_objects and current_time - last_obj_update_time > 2:
-        unique_objects = set(detected_objects)
-        if unique_objects != last_detected_objects:
-            print("⚠️ Detected objects ahead:", ", ".join(unique_objects))
-            last_detected_objects = unique_objects
-            last_obj_update_time = current_time
+    if detected_objects_with_direction and current_time - last_obj_update_time > 2:
+        unique_msgs = list(set(detected_objects_with_direction))
+        print("⚠️", " | ".join(unique_msgs))
+        last_obj_update_time = current_time
+    
 
     # Visual overlay
     frame_display = frame.copy()
