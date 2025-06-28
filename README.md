@@ -109,26 +109,26 @@ python yolov8_train.py  # Ensure paths to dataset are configured
 python yolov8_infer.py --weights runs/segment/train8/weights/best.pt
 ```
 
----
+=======
+## 📈 Future Scope
 
-### 📈 Future Scope
-
-* GPS + Google Maps integration
-* Multi-class segmentation (stairs, curbs, potholes)
-* Vibration feedback for enhanced accessibility
-
----
-
-### 👨‍💻 Contributors
-
-* **Sujay Korde** – Developer, Annotator, and Trainer
+- GPS + Google Maps integration
+- Multi-class segmentation (stairs, curbs, potholes)
+- Vibration feedback for enhanced accessibility
 
 ---
 
-### 📜 License
+## 👨‍💻 Contributors
+
+- **Sujay Korde** – 
+- **Anish Kshirsagar**
+- **Kritika Ingle**
+- **Kimaya Kolhe**
+- **Abhishek Kulkarni**
+
+---
+
+## 📜 License
 
 This project is open-source and available under the [MIT License](LICENSE).
-
----
-
-
+>>>>>>> 64c278e (Add README file with contributors)
